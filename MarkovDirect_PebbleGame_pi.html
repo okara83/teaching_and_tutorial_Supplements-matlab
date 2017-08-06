@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Markov Simple Pebble Game</title>
+<meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+<div class="page-header">
+  <h1>Markov Simple Pebble Game</h1>
+<div>
+<canvas id="canvas" width="300" height="300" style="border:1px solid #000000; padding: 0; margin: auto; display: block;"> </canvas>
+<h6 style="text-align: center;" id="pi"> </h6>
+</div>
+<script>
+(function() {
+ var pi = document.getElementById("pi");
+ var canvas = document.getElementById("canvas");
+ var cntxt = canvas.getContext("2d");
+ 
+ var radius = canvas.height / 2.;
+ cntxt.translate(radius, radius);
+ 
+ var Trials = 0;
+ var hitsInCircle = 0;
+ 
+ function randomPoint() {
+    var x = 2.*Math.random()-1.; 
+    var y = 2.*Math.random()-1.;
+ 
+    var p = x**2 + y**2;
+    if (p < 1) {
+        cntxt.fillStyle = "#FF0000";
+        ++hitsInCircle;
+    }
+    else cntxt.fillStyle = "#444444";
+  
+    ++Trials;
+    cntxt.fillRect(radius*x-1,radius*y-1,2,2);
+ 
+    if (Trials % 100 === 0)
+    {
+       var piApprox = hitsInCircle / Trials * 4.;
+       pi.innerHTML = 'estimated value for pi = ' + piApprox.toPrecision(5);
+       if (pi.innerHTML == " ")
+       {
+           Trials = 0;
+           hitsInCircle = 0;
+ 
+           cntxt.clearRect(-radius, -radius, canvas.width, canvas.height);
+       }
+    }
+ }
+ 
+ setInterval(randomPoint, 10);
+})();
+
+</script>
+</html>
